@@ -626,6 +626,11 @@ interface Diagnostic {
         errorCallback: (error: string) => void
     ) => void;
 
+    requestPackageUsageStatsAuthorization?: (
+        successCallback: (status: string) => void,
+        errorCallback: (error: string) => void
+    ) => void;
+
     getPackageUsageStats?: (
         successCallback: (stats: any) => void,
         errorCallback: (error: string) => void
