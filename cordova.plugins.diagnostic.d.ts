@@ -380,6 +380,11 @@ interface Diagnostic {
         errorCallback: (error: string) => void
     ) => void;
 
+    switchToAppUsageStatsSettings?: (
+        successCallback: () => void,
+        errorCallback: (error: string) => void
+    ) => void;
+
     /**
      * ANDROID and iOS ONLY
      * Returns the state of Bluetooth on the device.

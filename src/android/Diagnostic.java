@@ -303,6 +303,9 @@ public class Diagnostic extends CordovaPlugin{
             } else if (action.equals("switchToNFCSettings")){
                 switchToNFCSettings();
                 callbackContext.success();
+            } else if (action.equals("switchToAppUsageStatsSettings")){
+                switchToAppUsageStatsSettings();
+                callbackContext.success();
             } else if(action.equals("isLocationAvailable")) {
                 callbackContext.success(isGpsLocationAvailable() || isNetworkLocationAvailable() ? 1 : 0);
             } else if(action.equals("isLocationEnabled")) {
@@ -525,6 +528,13 @@ public class Diagnostic extends CordovaPlugin{
         }
         cordova.getActivity().startActivity(settingsIntent);
     }
+    public void switchToAppUsageStatsSettings() {
+        Log.d(TAG, "Switch to App usage stats Settings");
+        Intent appIntent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+        Uri uri = Uri.fromParts("package", cordova.getActivity().getPackageName(), null);
+        appIntent.setData(uri);
+        cordova.getActivity().startActivity(appIntent);
+    }
 
     public void setWifiState(boolean enable) {
         WifiManager wifiManager = (WifiManager) this.cordova.getActivity().getSystemService(Context.WIFI_SERVICE);
@@ -600,6 +610,7 @@ public class Diagnostic extends CordovaPlugin{
     }
 
     public void requestRuntimePermission(String permission, int requestId) throws Exception{
+        Log.d(TAG, "Request runtime permission " + permission + " with Request Id " + requestId);
         JSONArray permissions = new JSONArray();
         permissions.put(permission);
         _requestRuntimePermissions(permissions, requestId);
