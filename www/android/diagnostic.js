@@ -63,7 +63,8 @@ var Diagnostic = (function(){
             "RECEIVE_MMS": "RECEIVE_MMS",
             "WRITE_EXTERNAL_STORAGE": "WRITE_EXTERNAL_STORAGE",
             "READ_EXTERNAL_STORAGE": "READ_EXTERNAL_STORAGE",
-            "BODY_SENSORS": "BODY_SENSORS"
+            "BODY_SENSORS": "BODY_SENSORS",
+            "PACKAGE_USAGE_STATS": "PACKAGE_USAGE_STATS"
         };
 
     /**
@@ -1297,6 +1298,13 @@ var Diagnostic = (function(){
         Diagnostic._onNFCStateChange = successCallback || function(){};
     };
 
+    Diagnostic.getPackageUsageStats = function(successCallback, errorCallback){
+        return cordova.exec(successCallback,
+            errorCallback,
+            'Diagnostic',
+            'getPackageUsageStats',
+            []);
+    };
 
     /**************
      * Constructor

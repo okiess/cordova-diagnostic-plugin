@@ -123,6 +123,8 @@ public class Diagnostic extends CordovaPlugin{
         Diagnostic.addBiDirMapEntry(_permissionsMap, "WRITE_CALL_LOG", Manifest.permission.WRITE_CALL_LOG);
         Diagnostic.addBiDirMapEntry(_permissionsMap, "READ_EXTERNAL_STORAGE", Manifest.permission.READ_EXTERNAL_STORAGE);
         Diagnostic.addBiDirMapEntry(_permissionsMap, "BODY_SENSORS", Manifest.permission.BODY_SENSORS);
+        Diagnostic.addBiDirMapEntry(_permissionsMap, "PACKAGE_USAGE_STATS", Manifest.permission.PACKAGE_USAGE_STATS);
+
         permissionsMap = Collections.unmodifiableMap(_permissionsMap);
     }
 
@@ -151,6 +153,8 @@ public class Diagnostic extends CordovaPlugin{
     private static String gpsLocationPermission = "ACCESS_FINE_LOCATION";
     private static String networkLocationPermission = "ACCESS_COARSE_LOCATION";
     private static String externalStoragePermission = "READ_EXTERNAL_STORAGE";
+
+    private static String packageUsageStatsPermission = "PACKAGE_USAGE_STATS";
 
     /**
      * Either user denied permission and checked "never ask again"
@@ -190,6 +194,8 @@ public class Diagnostic extends CordovaPlugin{
     private static final String LOCATION_MODE_UNKNOWN = "unknown";
 
     private static final Integer GET_EXTERNAL_SD_CARD_DETAILS_PERMISSION_REQUEST = 1000;
+
+    private static final Integer GET_PACKAGE_USAGE_STATUS_PERMISSION_REQUEST = 1001;
 
     public static final int NFC_STATE_VALUE_UNKNOWN = 0;
     public static final int NFC_STATE_VALUE_OFF = 1;
@@ -354,6 +360,8 @@ public class Diagnostic extends CordovaPlugin{
                 callbackContext.success(isNFCAvailable() ? 1 : 0);
             } else if(action.equals("isRemoteNotificationsEnabled")) {
                 callbackContext.success(isRemoteNotificationsEnabled() ? 1 : 0);
+            } else if(action.equals("getPackageUsageStats")) {
+                this.getPackageUsageStats();
             } else {
                 handleError("Invalid action");
                 return false;
@@ -925,6 +933,23 @@ public class Diagnostic extends CordovaPlugin{
         currentContext.success(details);
     }
 
+    public void getPackageUsageStats() throws Exception {
+        String permission = permissionsMap.get(packageUsageStatsPermission);
+        if (hasPermission(permission)) {
+            _getPackageUsageStats();
+        } else {
+            requestRuntimePermission(permission, GET_PACKAGE_USAGE_STATUS_PERMISSION_REQUEST);
+        }
+    }
+
+    protected void _getPackageUsageStats() {
+        JSONArray details = new JSONArray();
+
+        // TODO
+
+        currentContext.success(details);
+    }
+
     /**
      * Given a path return the number of free bytes in the filesystem containing the path.
      *
@@ -1072,6 +1097,8 @@ public class Diagnostic extends CordovaPlugin{
 
             if(requestCode == GET_EXTERNAL_SD_CARD_DETAILS_PERMISSION_REQUEST){
                 _getExternalSdCardDetails();
+            } else if (requestCode == GET_PACKAGE_USAGE_STATUS_PERMISSION_REQUEST) {
+                _getPackageUsageStats();
             }else{
                 context.success(statuses);
             }
