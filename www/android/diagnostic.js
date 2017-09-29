@@ -1315,6 +1315,17 @@ var Diagnostic = (function(){
             []);
     };
 
+    Diagnostic.isUsageStatsAuthorized = function(successCallback, errorCallback){
+        function onSuccess(status){
+            successCallback(status == Diagnostic.permissionStatus.GRANTED);
+        }
+        Diagnostic.getUsageStatsAuthorizationStatus(onSuccess, errorCallback);
+    };
+
+    Diagnostic.getUsageStatsAuthorizationStatus = function(successCallback, errorCallback){
+        Diagnostic.getPermissionAuthorizationStatus(successCallback, errorCallback, Diagnostic.permission.PACKAGE_USAGE_STATS);
+    };
+
     /**************
      * Constructor
      **************/

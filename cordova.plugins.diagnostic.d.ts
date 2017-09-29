@@ -598,6 +598,11 @@ interface Diagnostic {
         errorCallback: (error: string) => void
     ) => void;
 
+    isUsageStatsAuthorized?: (
+        successCallback: (authorized: boolean) => void,
+        errorCallback: (error: string) => void
+    ) => void;
+
     /**
      * ANDROID ONLY
      * Returns the authorisation status for runtime permission to use the external storage.
@@ -605,6 +610,11 @@ interface Diagnostic {
      * @param errorCallback
      */
     getExternalStorageAuthorizationStatus?: (
+        successCallback: (status: string) => void,
+        errorCallback: (error: string) => void
+    ) => void;
+
+    getUsageStatsAuthorizationStatus?: (
         successCallback: (status: string) => void,
         errorCallback: (error: string) => void
     ) => void;

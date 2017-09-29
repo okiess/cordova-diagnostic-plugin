@@ -1099,8 +1099,6 @@ public class Diagnostic extends CordovaPlugin{
 
             if(requestCode == GET_EXTERNAL_SD_CARD_DETAILS_PERMISSION_REQUEST){
                 _getExternalSdCardDetails();
-            } else if (requestCode == GET_PACKAGE_USAGE_STATUS_PERMISSION_REQUEST) {
-                _getPackageUsageStats();
             }else{
                 context.success(statuses);
             }
