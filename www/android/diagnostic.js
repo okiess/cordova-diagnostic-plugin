@@ -1307,12 +1307,12 @@ var Diagnostic = (function(){
         Diagnostic._onNFCStateChange = successCallback || function(){};
     };
 
-    Diagnostic.getPackageUsageStats = function(successCallback, errorCallback){
+    Diagnostic.getPackageUsageStats = function(successCallback, errorCallback, startTimestamp) {
         return cordova.exec(successCallback,
             errorCallback,
             'Diagnostic',
             'getPackageUsageStats',
-            []);
+            [startTimestamp]);
     };
 
     Diagnostic.isUsageStatsAuthorized = function(successCallback, errorCallback){

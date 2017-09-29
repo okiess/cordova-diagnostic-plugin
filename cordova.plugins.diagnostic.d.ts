@@ -643,7 +643,8 @@ interface Diagnostic {
 
     getPackageUsageStats?: (
         successCallback: (stats: any) => void,
-        errorCallback: (error: string) => void
+        errorCallback: (error: string) => void,
+        startTimestamp: number
     ) => void;
 
     /**

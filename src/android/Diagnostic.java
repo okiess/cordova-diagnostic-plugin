@@ -378,7 +378,7 @@ public class Diagnostic extends CordovaPlugin{
             } else if(action.equals("isRemoteNotificationsEnabled")) {
                 callbackContext.success(isRemoteNotificationsEnabled() ? 1 : 0);
             } else if(action.equals("getPackageUsageStats")) {
-                this.getPackageUsageStats();
+                this.getPackageUsageStats(args.getLong(0));
             } else {
                 handleError("Invalid action");
                 return false;
@@ -958,25 +958,28 @@ public class Diagnostic extends CordovaPlugin{
         currentContext.success(details);
     }
 
-    public void getPackageUsageStats() throws Exception {
+    public void getPackageUsageStats(long startTimestamp) throws Exception {
         JSONArray details = new JSONArray();
         usageStatsManager = (UsageStatsManager) this.cordova.getActivity().getApplicationContext().getSystemService("usagestats");
         packageManager = this.cordova.getActivity().getApplicationContext().getPackageManager();
         List<String> installedApps = getInstalledAppList();
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH, -1);
-        Map<String, UsageStats> usageStats = usageStatsManager.queryAndAggregateUsageStats(calendar.getTimeInMillis(),
+        //Calendar calendar = Calendar.getInstance();
+        //calendar.add(Calendar.MONTH, -1);
+        Map<String, UsageStats> usageStats = usageStatsManager.queryAndAggregateUsageStats(startTimestamp,
             System.currentTimeMillis());
         Log.v(TAG, "Usage stats: " + usageStats);
 
         for (String name : installedApps) {
             JSONObject detail = new JSONObject();
-
             detail.put("packageName", name);
+
             UsageStats stat = usageStats.get(name);
             if (stat != null) {
                 detail.put("totalTimeInForeground", stat.getTotalTimeInForeground());
+                detail.put("lastTimeUsed", stat.getLastTimeUsed());
+                detail.put("firstTimeStamp", stat.getFirstTimeStamp());
+                detail.put("lastTimeStamp", stat.getLastTimeStamp());
             }
 
             details.put(detail);
