@@ -975,7 +975,7 @@ public class Diagnostic extends CordovaPlugin{
             detail.put("packageName", name);
             UsageStats stat = usageStats.get(name);
             if (stat != null) {
-                detail.put("totalTimeInForeground", stat.getTotalTimeInForeground(););
+                detail.put("totalTimeInForeground", stat.getTotalTimeInForeground());
             }
 
             details.put(detail);
