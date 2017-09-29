@@ -969,7 +969,7 @@ public class Diagnostic extends CordovaPlugin{
 
     private List<String> getInstalledAppList(){
         List<ApplicationInfo> infos = packageManager.getInstalledApplications(flags);
-        List<String> installedApps = new ArrayList<>();
+        List<String> installedApps = new ArrayList<String>();
         for (ApplicationInfo info : infos){
             installedApps.add(info.packageName);
         }
