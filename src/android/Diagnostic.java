@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -76,6 +75,9 @@ import java.util.Set;
 import static android.nfc.NfcAdapter.EXTRA_ADAPTER_STATE;
 import static android.nfc.NfcAdapter.STATE_OFF;
 import static android.nfc.NfcAdapter.STATE_ON;
+
+import android.content.pm.PackageManager;
+import android.content.pm.ApplicationInfo;
 
 /**
  * Diagnostic plugin implementation for Android
@@ -155,6 +157,10 @@ public class Diagnostic extends CordovaPlugin{
     private static String externalStoragePermission = "READ_EXTERNAL_STORAGE";
 
     private static String packageUsageStatsPermission = "PACKAGE_USAGE_STATS";
+    private PackageManager packageManager;
+    private static final int flags = PackageManager.GET_META_DATA |
+            PackageManager.GET_SHARED_LIBRARY_FILES |
+            PackageManager.GET_UNINSTALLED_PACKAGES;
 
     /**
      * Either user denied permission and checked "never ask again"
@@ -946,10 +952,28 @@ public class Diagnostic extends CordovaPlugin{
 
     public void getPackageUsageStats() throws Exception {
         JSONArray details = new JSONArray();
+        packageManager = this.cordova.getActivity().getApplicationContext().getPackageManager();
+        List<String> installedApps = getInstalledAppList();
 
-        // TODO
+        for (String appName : installedApps) {
+            JSONObject detail = new JSONObject();
+
+            detail.put("packageName", appName);
+            // TODO
+
+            details.put(detail);
+        }
 
         currentContext.success(details);
+    }
+
+    private List<String> getInstalledAppList(){
+        List<ApplicationInfo> infos = packageManager.getInstalledApplications(flags);
+        List<String> installedApps = new ArrayList<>();
+        for (ApplicationInfo info : infos){
+            installedApps.add(info.packageName);
+        }
+        return installedApps;
     }
 
     /**
