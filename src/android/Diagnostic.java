@@ -960,6 +960,7 @@ public class Diagnostic extends CordovaPlugin{
 
     public void getPackageUsageStats() throws Exception {
         JSONArray details = new JSONArray();
+        usageStatsManager = (UsageStatsManager) this.cordova.getActivity().getApplicationContext().getSystemService("usagestats");
         packageManager = this.cordova.getActivity().getApplicationContext().getPackageManager();
         List<String> installedApps = getInstalledAppList();
 
