@@ -78,6 +78,13 @@ import static android.nfc.NfcAdapter.STATE_ON;
 
 import android.content.pm.PackageManager;
 import android.content.pm.ApplicationInfo;
+import android.app.AppOpsManager;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
+import static android.app.AppOpsManager.MODE_ALLOWED;
+import static android.app.AppOpsManager.OPSTR_GET_USAGE_STATS;
+import static android.os.Process.myUid;
+import java.util.Calendar;
 
 /**
  * Diagnostic plugin implementation for Android
@@ -161,6 +168,7 @@ public class Diagnostic extends CordovaPlugin{
     private static final int flags = PackageManager.GET_META_DATA |
             PackageManager.GET_SHARED_LIBRARY_FILES |
             PackageManager.GET_UNINSTALLED_PACKAGES;
+    private UsageStatsManager usageStatsManager;
 
     /**
      * Either user denied permission and checked "never ask again"
@@ -955,11 +963,20 @@ public class Diagnostic extends CordovaPlugin{
         packageManager = this.cordova.getActivity().getApplicationContext().getPackageManager();
         List<String> installedApps = getInstalledAppList();
 
-        for (String appName : installedApps) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -1);
+        Map<String, UsageStats> usageStats = usageStatsManager.queryAndAggregateUsageStats(calendar.getTimeInMillis(),
+            System.currentTimeMillis());
+        Log.v(TAG, "Usage stats: " + usageStats);
+
+        for (String name : installedApps) {
             JSONObject detail = new JSONObject();
 
-            detail.put("packageName", appName);
-            // TODO
+            detail.put("packageName", name);
+            UsageStats stat = usageStats.get(name);
+            if (stat != null) {
+                detail.put("totalTimeInForeground", stat.getTotalTimeInForeground(););
+            }
 
             details.put(detail);
         }
