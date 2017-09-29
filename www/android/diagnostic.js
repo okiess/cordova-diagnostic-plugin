@@ -1307,10 +1307,6 @@ var Diagnostic = (function(){
         Diagnostic._onNFCStateChange = successCallback || function(){};
     };
 
-    Diagnostic.requestPackageUsageStatsAuthorization = function(successCallback, errorCallback){
-        Diagnostic.requestRuntimePermission(successCallback, errorCallback, Diagnostic.permission.PACKAGE_USAGE_STATS);
-    };
-
     Diagnostic.getPackageUsageStats = function(successCallback, errorCallback){
         return cordova.exec(successCallback,
             errorCallback,

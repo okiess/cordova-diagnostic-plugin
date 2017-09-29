@@ -945,15 +945,6 @@ public class Diagnostic extends CordovaPlugin{
     }
 
     public void getPackageUsageStats() throws Exception {
-        String permission = permissionsMap.get(packageUsageStatsPermission);
-        if (hasPermission(permission)) {
-            _getPackageUsageStats();
-        } else {
-            requestRuntimePermission(permission, GET_PACKAGE_USAGE_STATUS_PERMISSION_REQUEST);
-        }
-    }
-
-    protected void _getPackageUsageStats() {
         JSONArray details = new JSONArray();
 
         // TODO
