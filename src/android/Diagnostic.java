@@ -973,6 +973,8 @@ public class Diagnostic extends CordovaPlugin{
         for (String name : installedApps) {
             JSONObject detail = new JSONObject();
             detail.put("packageName", name);
+            String appName = (String) packageManager.getApplicationLabel(packageManager.getApplicationInfo(name, PackageManager.GET_META_DATA));
+            detail.put("appName", appName);
 
             UsageStats stat = usageStats.get(name);
             if (stat != null) {
