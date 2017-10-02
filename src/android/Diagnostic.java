@@ -960,37 +960,40 @@ public class Diagnostic extends CordovaPlugin{
 
     public void getPackageUsageStats(long startTimestamp) throws Exception {
         JSONArray details = new JSONArray();
-        usageStatsManager = (UsageStatsManager) this.cordova.getActivity().getApplicationContext().getSystemService("usagestats");
-        packageManager = this.cordova.getActivity().getApplicationContext().getPackageManager();
-        List<String> installedApps = getInstalledAppList();
 
-        //Calendar calendar = Calendar.getInstance();
-        //calendar.add(Calendar.MONTH, -1);
-        Map<String, UsageStats> usageStats = usageStatsManager.queryAndAggregateUsageStats(startTimestamp,
-            System.currentTimeMillis());
-        Log.v(TAG, "Usage stats: " + usageStats);
+        if (Build.VERSION.SDK_INT >= 21) {
+            usageStatsManager = (UsageStatsManager) this.cordova.getActivity().getApplicationContext().getSystemService("usagestats");
+            packageManager = this.cordova.getActivity().getApplicationContext().getPackageManager();
+            List<String> installedApps = getInstalledAppList();
 
-        for (String name : installedApps) {
-            JSONObject detail = new JSONObject();
-            detail.put("packageName", name);
-            String appName = (String) packageManager.getApplicationLabel(packageManager.getApplicationInfo(name, PackageManager.GET_META_DATA));
-            detail.put("appName", appName);
+            //Calendar calendar = Calendar.getInstance();
+            //calendar.add(Calendar.MONTH, -1);
+            Map<String, UsageStats> usageStats = usageStatsManager.queryAndAggregateUsageStats(startTimestamp,
+                System.currentTimeMillis());
+            Log.v(TAG, "Usage stats: " + usageStats);
 
-            UsageStats stat = usageStats.get(name);
-            if (stat != null) {
-                detail.put("totalTimeInForeground", stat.getTotalTimeInForeground());
-                detail.put("lastTimeUsed", stat.getLastTimeUsed());
-                detail.put("firstTimeStamp", stat.getFirstTimeStamp());
-                detail.put("lastTimeStamp", stat.getLastTimeStamp());
+            for (String name : installedApps) {
+                JSONObject detail = new JSONObject();
+                detail.put("packageName", name);
+                String appName = (String) packageManager.getApplicationLabel(packageManager.getApplicationInfo(name, PackageManager.GET_META_DATA));
+                detail.put("appName", appName);
+
+                UsageStats stat = usageStats.get(name);
+                if (stat != null) {
+                    detail.put("totalTimeInForeground", stat.getTotalTimeInForeground());
+                    detail.put("lastTimeUsed", stat.getLastTimeUsed());
+                    detail.put("firstTimeStamp", stat.getFirstTimeStamp());
+                    detail.put("lastTimeStamp", stat.getLastTimeStamp());
+                }
+
+                details.put(detail);
             }
-
-            details.put(detail);
         }
 
         currentContext.success(details);
     }
 
-    private List<String> getInstalledAppList(){
+    private List<String> getInstalledAppList() {
         List<ApplicationInfo> infos = packageManager.getInstalledApplications(flags);
         List<String> installedApps = new ArrayList<String>();
         for (ApplicationInfo info : infos){
