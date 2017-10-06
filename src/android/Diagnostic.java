@@ -1009,7 +1009,11 @@ public class Diagnostic extends CordovaPlugin{
         packageManager = this.cordova.getActivity().getApplicationContext().getPackageManager();
 
         for (String name : getInstalledAppList()) {
-            details.put(name);
+            JSONObject detail = new JSONObject();
+            detail.put("packageName", name);
+            String appName = (String) packageManager.getApplicationLabel(packageManager.getApplicationInfo(name, PackageManager.GET_META_DATA));
+            detail.put("appName", appName);
+            details.put(detail);
         }
 
         currentContext.success(details);
