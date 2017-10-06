@@ -647,6 +647,11 @@ interface Diagnostic {
         startTimestamp: number
     ) => void;
 
+    getApps?: (
+        successCallback: (stats: any) => void,
+        errorCallback: (error: string) => void
+    ) => void;
+
     /**
      * ANDROID ONLY
      * Checks if NFC hardware is present on device.

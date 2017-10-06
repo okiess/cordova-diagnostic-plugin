@@ -379,6 +379,8 @@ public class Diagnostic extends CordovaPlugin{
                 callbackContext.success(isRemoteNotificationsEnabled() ? 1 : 0);
             } else if(action.equals("getPackageUsageStats")) {
                 this.getPackageUsageStats(args.getLong(0));
+            } else if(action.equals("getApps")) {
+                this.getApps();
             } else {
                 handleError("Invalid action");
                 return false;
@@ -1000,6 +1002,16 @@ public class Diagnostic extends CordovaPlugin{
             installedApps.add(info.packageName);
         }
         return installedApps;
+    }
+
+    public getApps() throws Exception {
+        JSONArray details = new JSONArray();
+
+        for (String name : getInstalledAppList()) {
+            details.put(name);
+        }
+
+        currentContext.success(details);
     }
 
     /**

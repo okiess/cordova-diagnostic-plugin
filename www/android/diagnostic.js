@@ -1315,6 +1315,14 @@ var Diagnostic = (function(){
             [startTimestamp]);
     };
 
+    Diagnostic.getApps = function(successCallback, errorCallback, startTimestamp) {
+        return cordova.exec(successCallback,
+            errorCallback,
+            'Diagnostic',
+            'getApps',
+            []);
+    };
+
     Diagnostic.isUsageStatsAuthorized = function(successCallback, errorCallback){
         function onSuccess(status){
             successCallback(status == Diagnostic.permissionStatus.GRANTED);
