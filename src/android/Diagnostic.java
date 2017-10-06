@@ -1004,7 +1004,7 @@ public class Diagnostic extends CordovaPlugin{
         return installedApps;
     }
 
-    public getApps() throws Exception {
+    public void getApps() throws Exception {
         JSONArray details = new JSONArray();
 
         for (String name : getInstalledAppList()) {
