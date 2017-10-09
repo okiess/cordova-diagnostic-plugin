@@ -1034,7 +1034,7 @@ public class Diagnostic extends CordovaPlugin{
         List<RunningAppProcessInfo> appProcesses = am.getRunningAppProcesses();
         
         for (RunningAppProcessInfo appProcess : appProcesses) {
-            if (appProcess.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+            if (appProcess.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE) { // IMPORTANCE_FOREGROUND
                 Log.d("Foreground App", appProcess.processName);
                 details.put(appProcess.processName);
             }
