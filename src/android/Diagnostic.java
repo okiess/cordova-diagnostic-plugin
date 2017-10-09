@@ -1026,7 +1026,7 @@ public class Diagnostic extends CordovaPlugin{
 
     public void getCurrentForegroundApp() throws Exception {
         ActivityManager am = (ActivityManager) this.cordova.getActivity().getApplicationContext().getSystemService("activity");
-        RunningTaskInfo foregroundTaskInfo = am.getRunningTasks(1).get(0);
+        RunningTaskInfo foregroundTaskInfo = am.getRunningTasks(1).get(1);
         String pName = foregroundTaskInfo.topActivity.getPackageName();
         currentContext.success(pName);
     }
