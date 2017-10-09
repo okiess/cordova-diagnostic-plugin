@@ -1315,11 +1315,19 @@ var Diagnostic = (function(){
             [startTimestamp]);
     };
 
-    Diagnostic.getApps = function(successCallback, errorCallback, startTimestamp) {
+    Diagnostic.getApps = function(successCallback, errorCallback) {
         return cordova.exec(successCallback,
             errorCallback,
             'Diagnostic',
             'getApps',
+            []);
+    };
+
+    Diagnostic.getCurrentForegroundApp = function(successCallback, errorCallback) {
+        return cordova.exec(successCallback,
+            errorCallback,
+            'Diagnostic',
+            'getCurrentForegroundApp',
             []);
     };
 

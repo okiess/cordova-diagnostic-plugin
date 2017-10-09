@@ -86,6 +86,9 @@ import static android.app.AppOpsManager.OPSTR_GET_USAGE_STATS;
 import static android.os.Process.myUid;
 import java.util.Calendar;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningTaskInfo;
+
 /**
  * Diagnostic plugin implementation for Android
  */
@@ -381,6 +384,8 @@ public class Diagnostic extends CordovaPlugin{
                 this.getPackageUsageStats(args.getLong(0));
             } else if(action.equals("getApps")) {
                 this.getApps();
+            } else if(action.equals("getCurrentForegroundApp")) {
+                this.getCurrentForegroundApp();
             } else {
                 handleError("Invalid action");
                 return false;
@@ -1017,6 +1022,12 @@ public class Diagnostic extends CordovaPlugin{
         }
 
         currentContext.success(details);
+    }
+
+    public String getCurrentForegroundApp() throws Exception {
+        ActivityManager am = (ActivityManager) this.cordova.getActivity().getApplicationContext().getSystemService("activity");
+        RunningTaskInfo foregroundTaskInfo = am.getRunningTasks(1).get(0);
+        return foregroundTaskInfo.topActivity.getPackageName();
     }
 
     /**
