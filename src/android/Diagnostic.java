@@ -88,6 +88,7 @@ import java.util.Calendar;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
+import android.app.ActivityManager.RunningAppProcessInfo;
 
 /**
  * Diagnostic plugin implementation for Android
@@ -1031,17 +1032,14 @@ public class Diagnostic extends CordovaPlugin{
 
         JSONArray details = new JSONArray();
         List<RunningAppProcessInfo> appProcesses = am.getRunningAppProcesses();
-        JSONObject detail = new JSONObject();
-        List<String> procs = new ArrayList<String>();
-
+        
         for (RunningAppProcessInfo appProcess : appProcesses) {
             if (appProcess.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
                 Log.d("Foreground App", appProcess.processName);
-                procs.add(appProcess.processName);
+                details.put(appProcess.processName);
             }
         }
-        
-        details.put("appProcesses", procs);
+
         currentContext.success(details);
     }
 
