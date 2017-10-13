@@ -717,6 +717,14 @@ var Diagnostic = (function(){
             []);
     };
 
+    Diagnostic.switchBackToApp = function() {
+        return cordova.exec(null,
+            null,
+            'Diagnostic',
+            'switchBackToApp',
+            []);
+    };
+
     /**
      * Enables/disables WiFi on the device.
      *

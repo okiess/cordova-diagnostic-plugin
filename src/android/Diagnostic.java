@@ -324,6 +324,9 @@ public class Diagnostic extends CordovaPlugin{
             } else if (action.equals("switchToAppUsageStatsSettings")){
                 switchToAppUsageStatsSettings();
                 callbackContext.success();
+            } else if (action.equals("switchBackToApp")){
+                switchBackToApp();
+                callbackContext.success();
             } else if(action.equals("isLocationAvailable")) {
                 callbackContext.success(isGpsLocationAvailable() || isNetworkLocationAvailable() ? 1 : 0);
             } else if(action.equals("isLocationEnabled")) {
@@ -556,6 +559,12 @@ public class Diagnostic extends CordovaPlugin{
         Uri uri = Uri.fromParts("package", cordova.getActivity().getPackageName(), null);
         appIntent.setData(uri);
         cordova.getActivity().startActivity(appIntent);
+    }
+    public void switchBackToApp() {
+        Log.d(TAG, "Switch back to app");
+        Intent i = new Intent(this.cordova.getActivity().getApplicationContext(), this.cordova.getActivity().getClass());
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        cordova.getActivity().startActivity(i);
     }
 
     public void setWifiState(boolean enable) {

@@ -134,6 +134,8 @@ interface Diagnostic {
      */
     switchToWifiSettings?: () => void;
 
+    switchBackToApp?: () => void;
+
     /**
      * ANDROID and WINDOWS ONLY
      * Returns true if the WiFi setting is set to enabled, and is the same as isWifiAvailable()
