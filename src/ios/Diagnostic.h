@@ -60,5 +60,4 @@
 - (void) isRemindersAuthorized: (CDVInvokedUrlCommand*)command;
 - (void) requestRemindersAuthorization: (CDVInvokedUrlCommand*)command;
 
-
 @end
